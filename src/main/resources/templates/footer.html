@@ -1,0 +1,50 @@
+  <div class="space">&nbsp;</div>
+  
+<div class="bottom"></div>  
+  
+
+
+
+
+<div class="navbar navbar-fixed-bottom">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <div class="nav-collapse collapse">
+          <div class="pull-left">
+            <a class="btn btn-small btn-inverse" href="#top"><i class="icon-arrow-up"></i> Top of Page</a>
+          </div>
+          <div class="pull-left" th:if="${loggedInUser.userExists() == true}">
+            <a class="btn btn-small btn-inverse" th:href="'/profile/' +  ${loggedInUser.getUsername()}" style="margin-left: 12px;"><i class="icon-user"></i> My Profile</a>
+          </div>
+        <ul class="nav pull-right">
+          <li>
+              Theme: <select id="theme_selector">
+                  <option value="classic" th:selected="${theme == 'classic'}">Classic</option>
+                  <option value="spring" th:selected="${theme == 'spring'}">Spring</option>
+                  <option value="disco" th:selected="${theme == 'disco'}">Disco</option>
+                  <option value="vintage" th:selected="${theme == 'vintage'}">Vintage</option>
+                  <option value="steampunk" th:selected="${theme == 'steampunk'}">Steampunk</option>
+                  <option value="festival" th:selected="${theme == 'festival'}">Festival</option>
+            </select>
+          </li>
+        </ul>      
+      </div>
+    </div>  
+  </div>
+</div>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-75647-21"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-75647-21');
+</script>

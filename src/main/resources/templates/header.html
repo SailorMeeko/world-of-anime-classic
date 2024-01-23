@@ -1,0 +1,172 @@
+  <head>
+  <meta charset="utf-8">
+
+  <link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon" >
+  <link rel="stylesheet" href="/styles/jquery.qtip.css" />
+  <link rel="stylesheet" href="/javascript/tablesorter/themes/blue/style.css" />
+  
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+  
+  <!-- JQuery -->
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/2.3.1/css/bootstrap.min.css">
+   
+   
+  <link rel="stylesheet" href="/css/main.css?v=1" />
+
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+  <!-- Angular JS -->    
+  <script src="/javascript/angular.js"></script>
+  <script src="/javascript/app.js"></script>
+  <script src="/javascript/controllers/FriendController.js"></script>
+  <script src="/javascript/controllers/MembersController.js"></script>
+
+  <!-- Font Awesome -->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+<div th:insert="meta_tags" th:remove="tag" />
+  <script src="/javascript/jquery.qtip.min.js"></script>
+  <script src="/javascript/jquery.scrollTo-1.4.2-min.js"></script>
+  <script src="/ckeditor/ckeditor.js"></script>
+  <script src="/javascript/tablesorter/jquery.tablesorter.min.js"></script>
+  <script src="/javascript/shared.js?v=4"></script>
+  
+<!--[if IE]>
+ <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+
+
+
+ <meta name="google-site-verification" content="_l7bxEHPR_LeeYVVjejiv_BZqREPDo4ytNsqnGLaIPo" />
+</head>
+
+
+
+<div id="page">
+
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li><a class="brand" href="/">Home</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Information <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/anime">Anime Database</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="http://www.worldofanime.com/groups">Groups</a></li>
+              <li><a href="http://www.worldofanime.com/question">Anime Answers</a></li>
+              <li><a href="http://www.worldofanime.com/forums">Forums</a></li>
+              <li><a href="/chat">Chat</a></li>
+            </ul>
+          </li>                     
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Artists Alley <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/artist/fiction">Fan Fiction</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="http://www.worldofanime.com/members">Browse all Members</a></li>
+              <li><a href="http://www.worldofanime.com/members">Search for Members</a></li>
+              <li><a href="/online">Who's Online</a></li>
+            </ul>
+          </li>         
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Site <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/newsletter">Newsletter</a></li>
+              <li><a href="http://www.twitter.com/WorldOfAnimeCom">Follow us on Twitter</a></li>
+              <li><a href="/contact">Contact Us</a></li>
+              <li th:if="${loggedInUser.userExists() == false}"><a href="http://www.worldofanime.com/user/signup">Join</a></li>
+            </ul>
+          </li>
+
+        </ul>       
+
+<div class="pull-right" th:if="${loggedInUser.userExists() == false}">
+<a class="btn btn-small btn-primary" href="http://www.worldofanime.com/user/signup"><i class="icon-user"></i> Join World of Anime</a>
+</div>
+
+
+<div class="btn-group pull-right" th:if="${loggedInUser.userExists() == true}">
+
+<script>
+    $(document).ready(function(){
+        
+  checkNotifications();
+  setInterval('checkNotifications()', 60000); 
+
+        });
+
+  function checkNotifications() {
+    $('.unread_notifications').load('/notifications/check');
+    return false;
+        }
+</script>
+
+     <a class="btn" data-toggle="dropdown" href="#"><i class="icon-user"></i> You are logged in</a>
+     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
+     
+     <ul class="dropdown-menu">
+          <li><a th:href="'/profile/' + ${loggedInUser.getUsername()}"><i class="icon-user"></i> My Profile</a></li>
+    <li><a th:href="'/profile/' + ${loggedInUser.getUsername()} + '/groups'"><i class="icon-group"></i> My Groups</a></li>
+    <li><a th:href="'/profile/' + ${loggedInUser.getUsername()} + '/friends'"><i class="icon-heart"></i> My Friends</a></li>
+    <li><a th:href="'/profile/' + ${loggedInUser.getUsername()} + '/blog'"><i class="icon-pencil"></i> My Blog</a></li>
+    <li><a th:href="'/profile/' + ${loggedInUser.getUsername()} + '/gallery'"><i class="icon-picture"></i> My Image Galleries</a></li>
+    <li th:if="${userNotifications.getNumMessages() > 0}"><a href="http://www.worldofanime.com/messages/inbox"><i class="icon-inbox"></i> My Private Messages <span class="attention" th:text="'(' + ${userNotifications.getNumMessages()} + ' Unread)'"></a></li>
+    <li th:if="${userNotifications.getNumMessages() < 1}"><a href="http://www.worldofanime.com/messages/inbox"><i class="icon-inbox"></i> My Private Messages</a></li>    
+    <li><a href="http://www.worldofanime.com/activity/notifications"><i class="icon-bell-alt"></i> Notifications <span class="unread_notifications"></span></a></li>
+    
+    <div th:if="${userFriendRequestsNum > 0}" th:remove="tag">
+               <li class="divider"></li>
+                    <li><a href="/friend_requests"><i class="icon-heart-empty"></i> <span class="attention" th:text="'You have ' + ${userFriendRequestsNum} + ' friend requests'" /></a></li>
+    </div>
+
+    <li class="divider"></li>
+    <li><a href="/logout"><i class="icon-off"></i> Logout</a></li>
+     </ul>
+     
+        <a class="btn btn-small" href="http://www.worldofanime.com/activity/notifications" style="margin-left: 12px;"><i class="icon-bell-alt"></i> <span class="unread_notifications"></span></a>
+</div>
+
+
+        
+      </div>
+    </div>  
+  </div>
+</div>
+
+
+
+<link rel="stylesheet" th:href="'/styles/themes/' + ${theme} + '.css'" />
+
+<div class="row">
+  <div class="span12">
+      <span class="title"><a href="/"><img th:src="'/images/logos/' + ${theme} + '.jpg'" border="0"></a></span>
+  </div>
+</div>
+  <br clear="all">
+
+
+<div th:insert="ad_header" th:remove="tag" />
+
+        <br clear="all">

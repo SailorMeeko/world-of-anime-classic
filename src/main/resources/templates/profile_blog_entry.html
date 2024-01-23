@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+<div id="content">
+
+<script src="/javascript/blogs.js"></script>
+
+<div id="blog_header">
+
+		<div class="header_image">
+				<a th:href="'/profile/' + ${profile.getUsername()}"><img th:src="${profile.getImageIcon()}" border="0"></a>
+		</div>
+		
+		<div class="header_extra">
+				<span class="blog_subject" th:text="${blog.getTitle()}" /><p>
+				<span class="header_info">Posted by</span>
+					<a th:href="'/profile/' + ${profile.getUsername()}" th:text="${profile.getUsername()}"></a>
+				<span class="header_info" th:text="'on ' + ${blog.getCreationDate()}" /><br>
+				<span class="header_info">View all of <a th:href="'/profile/' + ${profile.getUsername() + '/blog'}" th:text="${profile.getUsername()} + '\'s Blog'" /></span><br>
+				<span class="header_info"><img src="/images/comment.gif"> <a href="#comments" th:text="${blog.getCommentCount()} + ' Comments'" /></span>
+		</div>
+</div>
+
+<!-- Blog Entry -->
+<div id="blog_entry">
+<span class="blog_post" th:utext="${blog.getBody()}" />
+</div>
+<!-- End Blog Entry -->
+
+
+<p />
+<a name="comments"><h1 class="front_header">Comments</h1></a>
+
+	    <div id="posts">
+
+	    <th:block th:each="comment : ${blogComments}">
+
+	      <div class="comment">
+	        <a th:href="'/profile/' + ${comment.getUsername()}"><img th:src="${comment.getAuthorImageIcon()}" /></a>
+	        <p class="article" th:utext="${comment.getCommentBody()}"></p>
+	        <br clear="all">
+	        <h2 th:text="'Submitted by ' + ${comment.getUsername()} + ' on ' + ${#dates.format(comment.getCommentDate(), 'MMM dd, yyyy h:mm a')}"></h2><br />
+	      </div>
+
+	    </th:block>    
+
+		</div>
+
+	</div>
+		
+				
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>		

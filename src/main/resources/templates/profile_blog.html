@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+<div id="content">
+
+<script>
+function checkform()
+{
+	if (document.blog_form.blog_title.value == "")
+	{
+		// something is wrong
+		alert('Please enter a title for this blog entry.');
+		return false;
+	}
+	// If the script gets this far through all of your fields
+	// without problems, it's ok and you can submit the form
+
+	return true;
+}
+</script>
+
+		<div th:if="${loggedInUser.getUserId() == profile.getUserId() && 1 == 0}" th:remove="tag">
+			<a href="#" onclick="javascript:$('#new_thread_box').toggle(); $('#blog_form #blog_title').focus();">
+			<div id="add_button">+ Add</div>
+			</a>
+		</div>
+		
+<div id="blog_header">
+		
+		<div class="header_image">
+				<a th:href="'/profile/' + ${profile.getUsername()}"><img th:src="${profile.getImageIcon()}" border="0"></a>
+		</div>
+		
+		<div class="header_extra">
+				<span class="header_topic" th:text="${profile.getUsername()} + '\'s Blog'" /><p>
+		</div>
+
+</div>
+
+<div th:if="${loggedInUser.getUserId() == profile.getUserId() && 1 == 0}" th:remove="tag">
+	<p>
+	<div id="new_thread_box">    
+	<form class="removable_button" id="blog_form" name="blog_form" action="" method="post" enctype="multipart/form-data" onSubmit="return checkform()">
+	    <h2>Post a New Blog Entry</h2>
+
+	    <h3>Title:</h3>
+	    <br />
+
+	    <span class="form-field"><input type="text" id="blog_title" name="blog_title" value="" size="45" maxlength="255"></span>
+	    
+	    <p />
+	    
+	    <div id="form_field">
+
+	    <h3>Website:</h3>
+	    <br />
+	    <span><input type="text" name="website" size="75" maxlength="255"></span>
+	    </div>
+
+	    <span class="form-field">
+
+		<a href="#" th:title="${embedTip}" id="tip" class="tip_question">(How do I embed video?)</a>
+		<p>
+
+	    <textarea name="blog_post"></textarea>
+	    
+	    </span>
+
+	    <p />
+		
+	    <input type="submit" value="Post New Blog Entry" class="removable">
+
+	</form>
+	</div>
+
+	<script type="text/javascript">
+		CKEDITOR.replace( 'blog_post', {
+		toolbar: 
+	        [
+	            ['Source','-','Preview','-','Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+	            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','/'],
+	            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+	            ['Link','Unlink','Anchor'],
+		    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','/'],
+	            ['Styles','Format','Font','FontSize','TextColor','BGColor'],
+	        ]
+
+	    } );
+	</script>
+</div>
+
+	<div th:if="${blogs != null}" th:remove="tag">
+		<th:block th:each="blog : ${blogs}">
+			<div id="blog_entry">
+		        <span class="comment_byline"><img src="/images/comment.gif"> <a th:href="'/profile/' + ${profile.getUsername()} + '/blog/' + ${blog.getBlogId() + '#comments'}" th:text="${blog.getCommentCount()} + ' Comments'" /></span>
+		        <span class="blog_subject"><a th:href="'/profile/' + ${profile.getUsername()} + '/blog/' + ${blog.getBlogId()}" th:text="${blog.getTitle()}" /></span>
+		        <span class="blog_post" th:utext="${blog.getBody()}" />
+		        <span class="blog_byline" th:text="'Posted ' + ${blog.getCreationDate()}" />
+		    </div>
+		</th:block>
+	</div>
+
+		</div>
+		
+				
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>		

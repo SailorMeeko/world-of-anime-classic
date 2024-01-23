@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+<div id="content">
+
+<div id="user_header">
+
+		<div class="header_image">
+				<a th:href="'/profile/' + ${profile.getUsername()}"><img th:src="${profile.getImageIcon()}" border="0"></a>
+		</div>
+		
+		<div class="header_extra">
+				<span class="header_topic" th:text="${profile.getUsername()} + '\'s Image Galleries'" /><p>
+		</div>
+</div>
+
+
+<p />
+
+<div th:if="${galleries != null}" th:remove="tag">
+	<div id="posts">
+		<th:block th:each="gallery : ${galleries}">
+
+		    <div class="gallery">
+
+		    <table>
+		    <tr>
+		        <td valign="top" rowspan="2">
+						<a th:href="'gallery/' + ${gallery.getAlbumId()}">
+						<ul class="photo">
+						<li><img th:src="${gallery.getImageNormal()}"></li>
+						</ul>
+				</a>
+			</td>
+		        <td valign="top"><span class="gallery_name"><a th:href="'gallery/' + ${gallery.getAlbumId()}" th:text="${gallery.getTitle()}" /></span>
+		                    <span class="gallery_description" th:utext="${gallery.getDescription()}" /></td>
+		    </tr>
+		    <tr>
+		        <td valign="bottom">
+		            <span class="gallery_byline" th:text="'Number of images: ' + ${gallery.getPhotosCount()}" />
+		        </td>
+		    </tr>
+		    </table>
+		    </div>
+
+				<p />
+		</th:block>
+	</div>
+</div>
+
+
+<div th:if="${galleries == null}" th:remove="tag">
+	<div th:text="${profile.getUsername()} + ' does not have any image galleries yet.'" />
+</div>
+
+<br clear="all">
+
+		</div>
+
+		
+				
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>		

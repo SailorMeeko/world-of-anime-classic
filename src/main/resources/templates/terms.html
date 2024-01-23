@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+		<div id="content">
+		
+<h1 class="front_header">Terms of Service</h1>
+
+<span class="terms">
+
+
+<h2>
+	Web Site Terms and Conditions of Use
+</h2>
+
+<div th:utext="${terms}" th:remove="tag" />
+
+
+		</div>
+		
+				
+		<div id="right_column">
+      		<div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>		

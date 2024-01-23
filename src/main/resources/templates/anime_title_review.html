@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+<script src="/javascript/anime.js?v=1"></script>
+
+		
+		<div id="content">
+		
+<script th:inline="javascript">
+$(function() {
+     $('#rating_box').qtip({
+	
+          content: /*[[${averageRatingsText}]]*/,
+          position: {
+               my: 'right bottom',
+               at: 'left center' },
+          style: { 
+               name: 'dark', // Inherit from preset style
+               classes: 'ui-tooltip-dark ui-tooltip-rounded' }
+    });
+});
+</script>		
+
+
+	
+
+		<h1 class="media_title" th:text="${title.getEnglishTitle()}"></h1>
+
+<div class="gen_profile_box">
+
+
+<div id="anime_profile_box">
+
+<img th:src="${title.getProfileImage().getSmallUrl()}" />
+    		
+</div>
+
+<br clear="all">
+
+<p>
+
+<nav th:insert="anime_vertical_tabs" />
+<div id="anime_ratings_box" th:insert="anime_ratings_box" />
+
+
+<div id="anime_db_box">
+
+
+<div id="news_block">
+  <div class="news_article">
+  <h2 th:text="'Reviewed by ' + ${review.getLegacyUser().getUsername()} + ' on ' + ${#dates.format(review.getCreateDate(), 'MMM dd, yyyy h:mm a')}"></h2><br />
+  <h2><a href="#comments"><img src="/images/comment.gif"> <span id="num_comments" th:text="${comments.size()} + ' comments'" /></a></h2><p>
+  <span th:text="'Rating: ' + ${review.getRating()} + ' / 10'" th:remove="tag" /><p />
+  <span th:utext="${review.getReviewHTML()}" th:remove="tag" />
+  </div>
+</div>
+
+
+<p />
+
+<!-- If User
+<div id="sharing_tools_box">
+
+    <a href="#" onclick="javascript:$('#new_comment_box').toggle();$('#comment_box').focus();return false" class="share_button">Post Comment</a>
+
+</div>
+
+
+<p />
+
+<div id="new_comment_box"></a>
+<form class="removable_button" id="add_comment" review="[% Review.id %]" latest="[% latest %]">
+
+    <h2>Post Comment</h2>
+  
+    <div id="form_field">
+
+    <h3>Website:</h3>
+    <br />
+    <span><input type="text" name="website" size="75" maxlength="255"></span>
+    </div>
+
+    <span class="form-field"><textarea name="comment" rows="8" cols="60" id="comment_box">[% post %]</textarea></span>
+  
+    <p />
+  
+    <input type="submit" value="Add New Comment" class="removable">
+    </form>
+</div>
+-->
+
+
+<a name="comments">
+<div id="posts">
+</a>
+
+<div id="new_comments"></div>
+
+    <th:block th:each="comment : ${comments}">
+
+      <div class="comment">
+        <img th:src="${comment.getUser().getUserProfile().getProfileImage().getThumbUrl()}" />
+        <p class="article" th:utext="${comment.getCommentHTML()}"></p>
+        <br clear="all">
+        <h2 th:text="'Submitted by ' + ${comment.getUser().getUsername()} + ' on ' + ${#dates.format(comment.getCreateDate(), 'MMM dd, yyyy h:mm a')}"></h2><br />
+      </div>
+
+    </th:block>
+
+</div>
+
+
+
+
+</div>
+
+
+    </div>
+
+		
+				
+		<div id="right_column">
+      		<div th:insert="login_form" th:remove="tag" />
+          <div th:insert="ad_right_side" th:remove="tag" />
+		</div>
+
+
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>
+		
+		
+<script>
+$(function() {
+       $('.reply_link').live('click', function(e) {
+            var finish = $(this).attr('finish');
+            var id   = $(this).attr('id');
+	    $('#reply_' + id).show();
+	    $('#comment_form_' + id + ' #comment_box_' + id).focus();
+            if (finish != 1) {
+	         return false;
+            }
+	});
+    });
+
+    $(function() {
+       $('#add_comment').live('submit', function(e) {
+            var parent = $(this).attr('parent');
+	    var user   = $(this).attr('user');
+	    var latest = $(this).attr('latest');
+            var group  = $(this).attr('group');
+	    $('#reply_' + parent).hide();
+
+	    var message = $('textarea#comment_box_' + parent);
+            var data = 'post='  + encodeURIComponent(message.val()) + '&user=' + user + '&latest=' + latest + '&group=' + group;
+	    $('textarea#comment_box_' + parent).val("");
+
+	    $.ajax({  
+               url: "/groups/ajax/add_reply/" + parent,
+               type: "POST",
+               data: data,       
+               cache: false,
+               success: function(response) {
+
+		    $.ajax({
+		         url: "/groups/ajax/load_profile_replies/" + parent,
+			 type: "POST",
+			 data: data,
+			 cache: false,
+                         success: function(new_replies) {
+			        $('.replies_' + parent).empty();
+				$('.replies_' + parent).append(new_replies);
+				$('#setup_reply_' + parent).show();
+		          },
+                          dataType: 'html'
+                     });
+		     
+		}
+            });
+	    
+
+            return false;
+	});
+    });
+    
+</script>	

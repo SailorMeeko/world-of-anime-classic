@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+		<script src="/static/javascript/blogs.js"></script>
+
+		<div id="content">
+
+<div class="section_image"><img src="/images/icons/anime_blog.jpg"></div>
+<span class="conversation_text">Here are the latest blog entries from World of Anime users.</span>
+
+<br clear="all">
+
+<div id="newest_members">
+
+		<th:block th:each="blog, iterStat : ${blogs}">
+			<div id="new_blogs_box" th:if="${users.get(blog.getOwnerId()).getStatusCode() == '200'}">
+			<a th:href="'/profile/' + ${users.get(blog.getOwnerId()).getBody().getProfile().getUsername()} + '/blog/' + ${blog.getBlogId()}"><img th:src="${blog.getOwnerImage()}" style="max-height: 100px; max-width: 100px;"></a>
+			<h2><a th:href="'/profile/' + ${users.get(blog.getOwnerId()).getBody().getProfile().getUsername()} + '/blog/' + ${blog.getBlogId()}" th:text="${blog.getTitle()}" /></h2>
+		    	<span th:utext="${blog.getShortenedContent()}" />
+			<p class="byline">Entered by <a th:href="'/profile/' + ${users.get(blog.getOwnerId()).getBody().getProfile().getUsername()}" th:text="${users.get(blog.getOwnerId()).getBody().getProfile().getUsername()}" /> on <span th:text="${#dates.format(blog.getCreationDate(), 'MMM dd, yyyy h:mm a')}" /></p>
+			<br clear="all">
+			</div>
+			<th:block />
+
+</div>
+
+</div>
+
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>		

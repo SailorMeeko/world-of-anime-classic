@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+
+
+<script src="/javascript/profile.js?v=4"></script>
+
+		<div id="content">
+
+<!-- User Profile -->
+
+<div id="user_profile_box">
+     <span class="user_profile_name" th:text="${profile.getUsername()} + '\'s Profile'" />
+     <img th:src="${profile.getImageProfile()}" />
+<p />
+
+
+<div style="font-family: Arial; font-size: 12px; color: grey;">
+
+<span th:text="'Joined: ' + ${#dates.format(profile.getCreationDate(), 'MMM dd, yyyy h:mm a')}" th:remove="tag" />
+
+</div>
+
+<p>
+
+
+<h1 class="front_header">Personal Information</h1>
+		<div id="personal_info">
+<table id="profile_table" cellspacing="1" cellpadding="2">
+<tr>
+     <th>Name:</th>
+</tr>
+<tr>
+     <td th:text="${profile.getDisplayName()}" />
+</tr>
+<tr>
+     <th>Gender:</th>
+</tr>
+<tr>
+     <td th:text="${personalInformation?.getGender()}" />
+</tr>
+<tr>
+     <th>About Me:</th>
+</tr>
+<tr>
+     <td th:text="${personalDetails.getAboutMe()}" />
+</tr>
+<tr>
+     <th>Favorite Anime:</th>
+</tr>
+<tr>
+     <td th:text="${personalDetails.getFavoriteAnime()}" />
+</tr>
+<tr>
+     <th>Favorite Movies:</th>
+</tr>
+<tr>
+     <td th:text="${personalDetails.getFavoriteMovies()}" />
+</tr>
+<tr>
+     <th>Groups:</th>
+</tr>
+<tr>
+     <td> 
+        <th:block th:each="group, iterStat : ${groups}">
+            <a th:if="${group.getAllowToView() == 1}" th:href="${group.getContentUrl()}" th:text="!${iterStat.last} ? ${group.getTitle()} + ', ' : ${group.getTitle()}" />
+        </th:block>
+     </td>
+</tr>
+</table>
+
+
+		</div>
+</div>
+
+
+<!-- Check if already friend (or yourself)
+     
+     <div class="your_friend">
+     <table>
+     <tr>
+		<td><img src="/static/images/icons/friend.gif"></td>
+		<td><span class="friend_text">[% user.username %] is your friend</span><br />
+		<span class="top_user_profile_date">Friends since [% prettify_date( friend_date, 3) %] - 
+		<div id="remove_friend_[% user.id %]" style="display: inline;"><span class="top_user_profile_date"><a href="#" class="friend-remove" id="[% user.id %]" style="color: grey;">Remove Friend</a></span></div>
+		</td>
+		    
+     </tr>
+     </table>
+     </div>
+ -->
+
+
+<!-- Check if this person is allowing friend requests -->
+
+
+
+<div id="profile_description_box">
+ <a th:href="'/profile/' + ${profile.getUsername()} + '/gallery'"><span>Image Galleries</span></a><br />
+ <a th:href="'/profile/' + ${profile.getUsername()} + '/friends'" th:text="'Friends'" /> <span class="friend_text" th:text="'(' + ${profile.getMemberCount()} + ')'" /><br />
+ <a th:href="'/profile/' + ${profile.getUsername()} + '/blog'"><span>Blog</span></a>
+ <br clear="all">
+ <p />
+</div>
+
+
+<div id="user_info_box">
+
+		<div id="box_comments">
+    
+               <div class="new_comment"><p> </p></div>
+               
+               <div th:if="${feeds != null}" th:remove="tag">
+
+                    <th:block th:each="feed : ${feeds}">
+
+                         <!-- Main post -->
+
+                         <div id="individual_post" th:class="'comment_' + ${feed.getActionId()}">
+                         <a th:href="'/profile/' + ${feed.getPoster().getUsername()}"><img th:src="${feed.getPoster().getImageIcon()}" border="0" class="comment_image"></a>
+                         <span class="post" th:text="${feed.getFeedTitle()}" />
+                         <br clear="all">
+                         <span class="post_byline" th:text="'Posted by ' + ${feed.getPoster().getUsername()} + ' on ' + ${feed.getDate()}" />
+                              
+                         <!-- Comments here -->
+
+                         <div th:if="${feed.getComments() != null}" th:remove="tag">
+                              <th:block th:each="comment : ${feed.getComments()}">
+                                   <div id="individual_reply" th:comment_id="${comment.getCommentId()}" th:class="'comment_' + ${comment.getCommentId()}">
+                                        <a th:href="'/profile/' + ${comment.getUsername()}"><img th:src="${comment.getAuthorImageIcon()}" border="0" class="comment_image"></a><span class="reply_post" th:text="${comment.getCommentBody()}" />
+                                        <br clear="all">
+                                        <span class="post_byline" style="font-size: 10px;" th:text="'Posted by ' + ${comment.getUsername()} + ' on ' + ${comment.getCommentDate()}" />
+                                   </div>
+                              </th:block>
+                         </div>
+
+                         <br clear="all">
+                         </div>
+
+                    </th:block>
+
+               </div>
+
+     
+		</div>
+
+		
+		
+</div>
+
+
+		</div>
+
+		
+				
+		<div id="right_column">
+			
+            <div th:insert="login_form" th:remove="tag" />
+
+<p />
+<h1 class="front_header" th:text="'What is ' + ${profile.getUsername()} + ' doing?'" />
+<div th:if="${loggedInUser.getUserId() == profile.getUserId()}" th:remove="tag">
+<a href="javascript:clearNowBlocks();" class="pull-right" style="text-decoration: none; color: #000; font-size: 10px;"><i class="icon-eraser"></i> Clear These</a>
+</div>
+</h1>
+<p />
+<table id="profile_table" cellspacing="1" cellpadding="2" width="100%">
+<tr>
+     <th align="left">Now Watching:</th>
+</tr>
+<tr>
+     <td><div id="now_watching" class="now_watching now_block" th:utext="${userProfile.getNowWatching()}" />
+     <div th:if="${loggedInUser.getUserId() == profile.getUserId()}" th:remove="tag">
+          <div id="setup_change_now_watching" class=""><a href="#" class="reply_link" onclick="javascript:$('#change_now_watching').show();$('#now_watching').hide();$('#setup_change_now_watching').hide();$('#change_now_watching #new_action_now_watching').focus().select();return false">Change</a></div>
+          <div id="change_now_watching" style="display: none;"><form id="now_action" type="now_watching"><input type="text" id="new_action_now_watching" size="25" maxlength="255" th:value="${userProfile.getNowWatching()}"> <input type="Submit" value="Set"></form></div>
+     </div>
+     </td>
+</tr>
+<tr>
+     <th align="left">Now Playing:</th>
+</tr>
+<tr>
+     <td><div id="now_playing" class="now_playing now_block" th:utext="${userProfile.getNowPlaying()}" />
+     <div th:if="${loggedInUser.getUserId() == profile.getUserId()}" th:remove="tag">
+          <div id="setup_change_now_playing"><a href="#" class="reply_link" onclick="javascript:$('#change_now_playing').show();$('#now_playing').hide();$('#setup_change_now_playing').hide();$('#change_now_playing #new_action_now_playing').focus().select();return false">Change</a></div>
+          <div id="change_now_playing" style="display: none;"><form id="now_action" type="now_playing"><input type="text" id="new_action_now_playing" size="25" maxlength="255" th:value="${userProfile.getNowPlaying()}"> <input type="Submit" value="Set"></form></div>
+     </div>
+     </td>
+</tr>
+<tr>
+     <th align="left">Now Reading:</th>
+</tr>
+<tr>
+     <td><div id="now_reading" class="now_reading now_block" th:utext="${userProfile.getNowReading()}" />
+     <div th:if="${loggedInUser.getUserId() == profile.getUserId()}" th:remove="tag">
+          <div id="setup_change_now_reading"><a href="#" class="reply_link" onclick="javascript:$('#change_now_reading').show();$('#now_reading').hide();$('#setup_change_now_reading').hide();$('#change_now_reading #new_action_now_reading').focus().select();return false">Change</a></div>
+          <div id="change_now_reading" style="display: none;"><form id="now_action" type="now_reading"><input type="text" id="new_action_now_reading" size="25" maxlength="255" th:value="${userProfile.getNowReading()}"> <input type="Submit" value="Set"></form></div>
+     </div>
+     </td>
+</tr>
+<tr>
+     <th align="left">Now Doing:</th>
+</tr>
+<tr>
+     <td><div id="now_doing" class="now_doing now_block" th:utext="${userProfile.getNowDoing()}" />
+     <div th:if="${loggedInUser.getUserId() == profile.getUserId()}" th:remove="tag">
+          <div id="setup_change_now_doing"><a href="#" class="reply_link" onclick="javascript:$('#change_now_doing').show();$('#now_doing').hide();$('#setup_change_now_doing').hide();$('#change_now_doing #new_action_now_doing').focus().select();return false">Change</a></div>
+          <div id="change_now_doing" style="display: none;"><form id="now_action" type="now_doing"><input type="text" id="new_action_now_doing" size="25" maxlength="255" th:value="${userProfile.getNowDoing()}"> <input type="Submit" value="Set"></form></div>
+     </div>
+     </td>
+</tr>
+</table>
+
+<p>
+
+               <div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>

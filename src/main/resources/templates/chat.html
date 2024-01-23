@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+		<div id="content">
+
+        	
+<h1 class="front_header">Chat</h1>
+
+
+<div th:if="${loggedInUser.userExists() == false}" th:remove="tag" >
+	<p>You must be logged in to participate in chat through the web client.</p>
+	<p>You can still participate in chat by using an IRC client (I recommend <a href="http://xchat.org/" target="_new">XChat</a>) and connecting to irc.mibbit.com on port 6667.  Join channel #WorldOfAnime</p>
+
+</div>
+
+<div th:if="${loggedInUser.userExists() == true}" th:remove="tag" >
+
+	<div id="posts">
+	<span class="normal_text">
+	This web chat is provided by <a href="http://www.mibbit.com/">Mibbit</a>.
+	<p />
+	By default, your World of Anime username will try to be used as your nick, but in case it is taken by someone else on the Mibbit network, you will need to pick another nick.
+	<p />
+	To change your nick, type:  /nick YOUR_DESIRED_NEW_NICK
+	<p />
+	If your nick is available, and you would like to register it to prevent someone else from using it, follow the instructions here:  <a href="http://wiki.mibbit.com/index.php/Create_Your_Own_Nickname">http://wiki.mibbit.com/index.php/Create_Your_Own_Nickname</a>
+	</span>
+	</div>
+
+	<p />
+
+	<div id="setup_answer">
+	<a href='#synirc/test' 
+	 th:onclick="${#strings.replace(onClick,'USERNAME', loggedInUser.getUsername())}" class="reply_button">
+	 Click here to join chat</a></div>
+	 <br />(This will pop open a new window)
+
+	 <p />
+
+	<p>Alternatively, you can participate in chat by using an IRC client (I recommend <a href="http://xchat.org/" target="_new">XChat</a>) and connecting to irc.mibbit.com on port 6667.  Join channel #WorldOfAnime</p>
+
+</div>
+
+
+		</div>
+		
+				
+		<div id="right_column">
+      		<div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />
+		</div>
+
+
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>
+		

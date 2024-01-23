@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+
+<script src="/javascript/anime.js?v=1"></script>
+
+		<div id="content">
+
+<p />
+
+
+<div id="popuup_reject_div" class="popup_reject_msg">
+   No Results Found
+</div>
+
+
+<form id="search_title" class="search_box form-search">
+Find anime: <input type="text" id="search_string" name="searchString" size="50" maxlength="255" placeholder="Anime Title" class="search-query"> <input type="Submit" value="Search!">
+</form>
+
+
+<div id="main_page">
+
+
+<div class="section_image"><img src="/images/icons/anime_database.jpg"></div>
+<span class="conversation_text">The World of Anime Database is a growing community built database of information on anime shows and episodes.</span>
+
+<br clear="all">
+
+<h2>Browse by Genre</h2>
+<a class="normal_text_list" th:each="dbGenres : ${dbGenres}" th:text="${dbGenres.getName()}" th:href="'/anime/browse/genre/' + ${dbGenres.getSafeUrl()}"></a>
+
+
+
+</div>
+
+<p />
+
+
+
+		</div>
+		
+				
+		<div id="right_column">
+      		<div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />
+		</div>
+
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>

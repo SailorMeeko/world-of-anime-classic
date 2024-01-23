@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+<script>
+$(function() {
+    $('[image-desc]').each(function() {
+		$(this).qtip({
+	
+      content: $(this).attr('image-desc'),
+      position: {
+               my: 'bottom center',
+               at: 'top center' },
+      style: { 
+      name: 'dark', // Inherit from preset style
+      classes: 'ui-tooltip-dark ui-tooltip-rounded'
+   }
+    });
+    });
+});
+</script>
+
+<div id="content">
+
+<div id="newsletter_box">
+  World of Anime has a <a href="/newsletter">Newsletter</a> now!
+</div>
+
+
+<div id="greeting_box" th:if="${loggedInUser.userExists() == false}">
+  <img src="/images/icons/anime_hi.jpg">
+  <p>Hi there!  It doesn't look like you're a member of World of Anime yet.  (Either that or you aren't logged in)</p>
+  <p>If you are not a member, we'd love to have you!  Please join the world's best Anime Social Networking Site, and start having fun today!</p>
+  <p><a href="http://www.worldofanime.com/user/signup" class="more_info_button" style="float: none;">Yes, I'd love to join!</a></p>
+</div>
+
+
+<div class="icon" style="padding-right: 15px;"><img src="/images/icons/welcome_new_members.jpg"></div>		
+<span class="intro">
+<h1>Welcome to World of Anime Classic!</h1>
+<p>World of Anime Classic is another way to view World of Anime, and is the original social networking site custom created just for anime fans.  Since 2009, World of Anime remains the best place for meeting new friends who all share your love of anime!</p>
+</span>
+
+<br clear="all">
+
+<div id="new_stuff_box">
+<h2>Random Anime</h2>
+
+  <div th:if="${randomAnimeTitle != null}" th:remove="tag">
+    <h2><a th:href="'/anime/' + ${randomAnimeTitle.getId()} + '/' + ${randomAnimeTitle.getSafeUrl()}" th:text="${randomAnimeTitle.getEnglishTitle()}" /></h2>
+    <a th:href="'/anime/' + ${randomAnimeTitle.getId()} + '/' + ${randomAnimeTitle.getSafeUrl()}"><img th:src="${randomAnimeTitle.getProfileImage().getThumbUrl()}"></a>
+    <div th:utext="${randomAnimeTitle.getShortenedDescription()}" th:remove="tag" />
+    <p class="byline" th:text="'Entered by ' + ${randomAnimeTitle.getStartedByUser().getUsername()}" />
+  </div>
+
+<a class="text_link" href="/anime">View More in the Anime Database</a>
+</div>
+
+
+<div id="latest_review_box">
+<h2>Latest Anime Review</h2>
+
+  <div th:if="${review != null}" th:remove="tag">
+        <h2><a th:href="'/anime/' + ${review.getDbTitle().getId()} + '/' + ${review.getDbTitle().getSafeUrl()} + '/review/' + ${review.getId()}" th:text="${review.getDbTitle().getEnglishTitle()}" /></h2>
+        <a th:href="'/anime/' + ${review.getDbTitle().getId()} + '/' + ${review.getDbTitle().getSafeUrl()} + '/review/' + ${review.getId()}"><img th:src="${review.getDbTitle().getProfileImage().getThumbUrl()}"></a>
+        <span th:text="'Rating: ' + ${review.getRating()} + ' / 10'" th:remove="tag" /><br />
+        <span th:utext="${review.getShortenedReviewHTML()}" th:remove="tag" /><br />
+        <p class="byline" th:text="'Reviewed by ' + ${review.getUser().getUsername()} + ' on ' + ${#dates.format(review.getCreateDate(), 'MMM dd, yyyy h:mm a')}" /></p>
+  </div>
+  <br clear="all">
+</div>
+
+
+<div id="latest_fiction_box">
+<h2>Latest Fan Fiction Activity</h2>
+<div th:each="chapter : ${chapters}">
+<div th:text="${chapter.getUser().getUsername()}" th:remove="tag" /> has written <a th:href="${chapter.getChapterUrl()}" th:text="'Chapter ' + ${chapter.getChapterNum()}" /> of <a th:href="${chapter.getStory().getStoryUrl()}" th:text="${chapter.getStory().getTitle()}" /> on 
+<div th:text="${#dates.format(chapter.getCreateDate(), 'MMM dd, yyyy h:mm a')}" th:remove="tag" /><p>
+</div>
+<br clear="all">
+<a class="text_link" href="/artist/fiction">View More in the Fan Fiction section</a>
+</div>
+
+
+		</div>
+		
+				
+		<div id="right_column">
+
+      <div th:insert="login_form" th:remove="tag" />
+		
+<div class="icon"><img src="/images/icons/latest_activity.jpg"></div>
+<p class="conversation_text">Want to know what's been going on lately?</p>
+<p><a class="btn btn-info" href="/blogs">Latest Blog Entries</a></p>
+More stuff coming later!
+<br clear="all">
+
+<div th:insert="ad_right_side" th:remove="tag" />
+			
+		</div>
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>

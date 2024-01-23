@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+<div id="content">
+
+
+<div id="main_page" ng-controller="FriendController" th:ng-init="'init(' + ${profile.getUserId()} + ')'">
+
+<div id="user_header">
+
+		<div class="header_image">
+				<a th:href="'/profile/' + ${profile.getUsername()}"><img th:src="${profile.getImageIcon()}" border="0"></a>
+		</div>
+		
+		<div class="header_extra">
+				<span class="header_topic" th:text="${profile.getUsername()} + '\'s Friends'" /><p>
+				<span class="header_info ng-cloak">{{ results.length }} friend<span ng-if="results.length != 1">s</span></span>
+		</div>
+</div>
+
+<p>
+<div class="search_box">
+Find a friend: <input type="text" placeholder="Friend's Name" class="search-query" ng-model="search.username">
+</div>
+
+<p>
+
+   	<ul class="random_members">
+        <li class="thumb_image_group" ng-repeat="f in results = (friends | filter:search)"><a href="/profile/{{ f.username }}" title="{{ f.username }}" class="ng-cloak"><img src="{{ f.image_profile }}" border="0"></a></li>
+    </ul>
+</div>
+
+
+
+		</div>
+		
+				
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>		

@@ -1,0 +1,10 @@
+    <div class="vert_tabs">
+        <ul>
+            <li><a th:href="${url}" th:text="'Main Title'" th:classappend="${isAnimePageTypeMainTitle} ? current" />
+            <li><a th:href="${url} + '/episodes'" th:text="'Episodes'" th:classappend="${isAnimePageTypeEpisodes} ? current" />
+            <li><a th:href="${url} + '/ratings'" th:text="'Ratings'" th:classappend="${isAnimePageTypeRatings} ? current" />
+	  	    <li><a th:href="${url} + '/reviews'" th:text="'Reviews'" th:classappend="${isAnimePageTypeReviews} ? current" />
+	    	<li><a th:href="${url} + '/fan_fiction'" th:text="'Fan Fiction'" th:classappend="${isAnimePageTypeFanFiction} ? current" />
+	    	<li><a th:href="${url} + '/store'" th:text="'Anime Store'" th:classappend="${isAnimePageTypeAnimeStore} ? current" />
+        </ul>
+    </div>

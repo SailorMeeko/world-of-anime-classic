@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+
+<script src="/static/javascript/anime.js?v=1"></script>
+
+		<div id="content">
+		
+
+<div id="popuup_reject_div" class="popup_reject_msg">
+   No Results Found
+</div>
+
+
+<form id="search_title" class="search_box form-search">
+Find anime: <input type="text" id="search_string" name="searchString" size="50" maxlength="255" class="search-query"> <input type="Submit" value="Search!">
+</form>
+
+
+<div id="main_page">
+
+<!-- If All Anime 
+<span class="normal_text">Browsing all Anime alphabetically</span>
+<p />
+<div id="pager_line">
+
+</div>
+<p />
+<table id="anime_titles">
+<tr>
+		<th>Title</th>
+		<th>Type</th>
+		<th>Year</th>
+</tr>
+    [% WHILE (a = Anime.next) %]
+		<tr>
+				<td width="85%"><a href="/anime/[% a.static_id %]/[% prettify_text( a.english_title ) %]">[% a.english_title %]</a></td>
+				<td>[% a.category.name %]</td>
+				<td>[% a.publish_year %]</td>
+		</tr>
+    [% END %]
+</table>
+<p />
+-->
+
+
+<!-- By Genre -->
+<span class="normal_text">Browsing the Anime Database by the genre <div th:text="${genres.getName()}" th:remove="tag" /></span>
+<p />
+<div id="pager_line" th:insert="pagination">
+
+</div>
+<p />
+<table id="anime_titles">
+<tr>
+		<th>Title</th>
+		<th>Type</th>
+		<th>Year</th>		
+</tr>
+
+    <tr th:each="title : ${page.content}">
+    	<div th:if="${title.getDbTitle() != null && title.getDbTitle().getActive() == true}" th:remove="tag">
+			<td width="85%"><a th:text="${title.getDbTitle().getEnglishTitle()}" th:href="'/anime/' + ${title.getDbTitle().getId()} + '/' + ${title.getDbTitle().getSafeUrl()}" /></td>
+			<td th:text="${title.getDbTitle().getDbCategory().getName()}" />
+			<td th:text="${title.getDbTitle().getPublishYear()}" />
+		</div>
+	</tr>
+</table>
+<p />
+<div id="pager_line" th:insert="pagination">
+
+</div>
+
+
+</div>
+
+<p />
+
+
+		</div>
+		
+				
+		<div id="right_column">
+      		<div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />
+		</div>
+
+
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+<script src="/javascript/artist.js"></script>
+
+<div id="content">
+
+<div id="main_page">
+
+
+<div class="section_image"><img src="/images/icons/anime_fanfiction.jpg"></div>
+<span class="conversation_text">Welcome to the Artists Alley - Fan Fiction section of World of Anime.  Here you will be able to enjoy the work of many of our highly talented artists we have on this site.</span>
+
+
+<br clear="all">
+
+<span class="intro">Whether you prefer to read Fan Fiction that is based off of an anime show, or original Fan Fiction not based on an existing show, our talented artists have you covered!  Just click on which one you prefer to read.</span>
+
+<a href="/artist/fiction/browse_fiction_by_title" class="btn btn-info">Browse by Anime Title</a>
+<p></p>
+<a href="/artist/fiction/browse_fiction_original" class="btn btn-info">Browse Original Fiction</a>
+
+</div>
+
+<p />
+
+
+		</div>
+		
+				
+		<div id="right_column">
+      		<div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />
+		</div>
+
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+    <div th:insert="header" th:remove="tag" />
+
+    <body>
+
+
+
+<script src="/javascript/profile.js?v=4"></script>
+
+        <div id="content">
+
+        <h1 th:if="${noticeHeader} != ''" class="notice_header" th:text="${noticeHeader}" />
+
+
+<div th:if="${loggedInUser.getUserId() == profile.getUserId()}" th:remove="tag">	
+
+    <div id="tabs">
+        <ul>
+            <li><a class="current" th:href="'/profile/' + ${profile.getUsername()} + '/edit/main'">Main Profile</a></li>
+<!--            <li><a class="current" th:href="'/profile/' + ${profile.getUsername()} + '/edit/appearance'">Appearance</a></li> -->
+        </ul>
+    </div>
+
+<p>
+
+<img th:src="${profile.getImageNormal()}" border="0">
+
+<form action="/update/profile/main" method="post" enctype="multipart/form-data" id="profile_form">
+
+<input type="hidden" name="do_update" value="1">
+
+<fieldset>
+     <label for="profile-name">Name</label>
+     <input type="text" name="profile_name" size="60" maxlength="255" th:value="${profile.getDisplayName()}" id="profile-name" />
+</fieldset>
+
+<fieldset>
+        <label for="profile-about">About Me</label>
+	<textarea name="about_me" rows="15" cols="60" id="profile-about"><div th:text="${personalDetails.getAboutMe()}" th:remove="tag" /></textarea>
+</fieldset>
+
+<fieldset>
+        <label for="profile-fav_anime">Favorite Anime</label>
+        <textarea name="favorite_anime" rows="15" cols="60" id="profile-fav_anime"><div th:text="${personalDetails.getFavoriteAnime()}" th:remove="tag" /></textarea>
+</fieldset>
+
+<fieldset>
+        <label for="profile-fav_movies">Favorite Movies</label>
+	<textarea name="favorite_movies" rows="15" cols="60" id="profile-fav_movies"><div th:text="${personalDetails.getFavoriteMovies()}" th:remove="tag" /></textarea>
+</fieldset>
+
+<input type="Submit" value="Update Profile">
+
+
+
+</div>
+
+<div th:if="${loggedInUser.getUserId() != profile.getUserId()}" th:remove="tag">
+    <h1 class="error_header">Error</h1>
+    This does not appear to be your profile. Please log in.
+</div>
+				
+
+               <div th:insert="ad_right_side" th:remove="tag" />            
+        </div>
+
+
+    <div th:insert="footer" th:remove="tag" />
+
+    </body>
+</html>

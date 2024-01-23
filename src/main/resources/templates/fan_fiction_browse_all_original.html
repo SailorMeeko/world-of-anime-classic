@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+<script src="/javascript/artist.js"></script>
+
+<div id="content">
+
+<br clear="all">
+
+
+<div class="fiction_list a" th:each="fiction : ${page.content}">
+  <span th:with="numberOfChapters=${fanFictionService.getNumberOfChapters(fiction.getId())}" th:remove="tag">	
+    <h1><a th:href="'/artist/fiction/view_story/' + ${fiction.getId()} + '/1/' + ${fiction.getSafeUrl()}" th:text="${fiction.getTitle()}"></a></h1>
+    <div style="padding-left: 15px;" th:utext="${fiction.getDescriptionHTML()}" />
+  Rated: <div th:text="${fiction.getRatingName()} + ', ' + ${numberOfChapters}" th:remove="tag" />
+  <div th:if="${numberOfChapters == 1}" th:text="'chapter, '" th:remove="tag" />
+  <div th:if="${numberOfChapters != 1}" th:text="'chapters, '" th:remove="tag" />  
+  <div th:text="'started by ' + ${fiction.getUser().getUsername()} + ' on ' + ${#dates.format(fiction.getCreateDate(), 'MMM dd, yyyy h:mm a')}" th:remove="tag" /><br>
+<hr>
+</div>
+
+<div id="pager_line" th:insert="pagination">
+</div>
+
+
+
+
+		</div>
+		
+				
+		<div id="right_column">
+      		<div th:insert="login_form" th:remove="tag" />
+          <div th:insert="ad_right_side" th:remove="tag" />
+		</div>
+
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>

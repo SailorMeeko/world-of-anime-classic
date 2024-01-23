@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+		<div id="content">
+
+<div id="user_header">
+
+		<div class="header_image">
+				<a th:href="'/profile/' + ${profile.getUsername()}"><img th:src="${profile.getImageIcon()}" border="0"></a>
+		</div>
+		
+		<div class="header_extra">
+				<span class="header_topic" th:text="${profile.getUsername()} + '\'s Groups'" /><p>
+		</div>
+</div>
+
+<p />
+
+
+        <th:block th:each="group, iterStat : ${groups}">
+		    <div th:if="${group.getAllowToView() == 1}" id="top_user_profile_box">
+			<table border="0">
+			<tr>
+			<td valign="top" rowspan="2">
+				<a th:href="${group.getContentUrl()}"><img th:src="${group.getImageProfile()}" border="0"></a>
+			</td>
+			<td valign="top" width="560">
+				<span class="group_name_link"><a th:href="${group.getContentUrl()}" th:text="${group.getTitle()}" /><br />
+		        <span class="top_user_profile_date" th:text="'+' + ${group.getMemberCount()} + ' members'" /><p />
+		        <span class="group_description" th:text="${group.getDescription()}" />
+			</td>
+			</tr>
+			<tr>
+			<td colspan="2" valign="bottom"><span class="top_user_profile_date" th:text="'Created on ' + ${#dates.format(group.getCreationDate(), 'MMM dd, yyyy h:mm a')}" /></td>
+			</tr>
+			</table>
+			</div>
+			<p />
+        </th:block>
+
+
+	</div>
+		
+							
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>		

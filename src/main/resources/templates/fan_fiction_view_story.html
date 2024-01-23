@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+<script src="/javascript/artist.js"></script>
+
+<span th:with="story=${chapter.getStory()}" th:remove="tag">   
+
+<script>
+function hideAnime() {
+    $('#anime_selection').hide();
+}
+
+function populateAnime() {
+    if (fetched == 0) {
+        $('#anime_selection').load('/artists/fiction/ajax/populate_anime_box');
+        fetched = 1;
+    } else {
+        $('#anime_selection').show();
+    }
+}
+
+$(document).ready(function(){
+    checkSubscription();
+});
+
+function checkSubscription() {
+    $('#subscription_box').load('/artist/fiction/check_subscription/[% story.id %]');
+}
+
+</script>
+
+<div id="content">
+
+<div id="story_header">
+
+		<div class="header_image" style="display: none;">
+				<a href="/profile/[% user.username %]"><img src="/[% user.filedir.replace("/u/", "/t80/") %]/[% user.filename %]" border="0"></a>
+		</div>
+		
+		<div class="header_extra">
+				<h1 th:text="${story.getTitle()}" />
+                <h2 th:text="'started by ' + ${story.getUser().getUsername()} + ' on ' + ${#dates.format(story.getCreateDate(), 'MMM dd, yyyy h:mm a')}" />
+
+<!--
+				[% IF story.db_title_id > 0 %]
+				<br>
+				    <h2>Based on <a href="/anime/[% story.db_title_id %]/[% prettify_text( story.based_on_title ) %]">[% story.based_on_title %]</a></h2>[% END %]
+		</div>
+-->
+
+    <div th:if="${chapter.getChapterNum() == 1}" th:remove="tag">
+        <p>
+        <div id="fiction_description_box"  th:utext="${story.getDescriptionHTML()}" />
+    </div>
+
+<br clear="all">
+<div id="subscription_box" story_id="[% story.id %]"></div>
+<br clear="all">
+
+</div>
+
+<p>
+
+
+	    <div id="fiction_story">
+		<div class="story_chapter">
+<!--
+		    <a class="discrete_edit" href="#" onclick="javascript:$('#content').hide(); javascript:$('#content_hidden').load('/artist/fiction/ajax/setup_edit_chapter/' + [% chap.id %]); javascript:$('#content_hidden').show()">Edit</a>
+-->
+		<h1 th:if="${chapter.getChapterTitle() != ''}" th:text="'Chapter: ' + ${chapter.getChapterNum()} + ': ' + ${chapter.getChapterTitle()}" />
+        <h1 th:if="${chapter.getChapterTitle() == ''}" th:text="'Chapter ' + ${chapter.getChapterNum()}" />
+		<p>
+		<div th:utext="${chapter.getChapterContentHTML()}" th:remove="tag" />
+
+		</div>
+	    </div>
+
+<p>
+
+<div th:if="${chapters.size() > 1}" align="right">
+    <form th:if="${chapter.getChapterNum() > 1}" id="previous_chapter" th:chapter="${chapter.getChapterNum()}" th:story_id="${chapter.getStory().getId()}" th:pretty_title="${chapter.getStory().getSafeUrl()}" style="display: inline;"><input type="Submit" value="Previous"></form>    
+    <select id="chapter_selector" th:story_id="${chapter.getStory().getId()}" th:pretty_title="${chapter.getStory().getSafeUrl()}" style="min-width: 350px">
+    <th:block th:each="chap : ${chapters}">
+        <option th:if="${chap.getChapterTitle() != ''}" th:value="${chap.getChapterNum()}" th:text="'Chapter ' + ${chap.getChapterNum()} + ': ' + ${chap.getChapterTitle()}" th:selected="${chap.getChapterNum() == chapter.getChapterNum()}" />
+        <option th:if="${chap.getChapterTitle() == ''}" th:value="${chap.getChapterNum()}" th:text="'Chapter ' + ${chap.getChapterNum()}" th:selected="${chap.getChapterNum() == chapter.getChapterNum()}" />        
+    </th:block>
+    </select>
+        <form th:if="${chapter.getChapterNum() < chapters.size()}" id="next_chapter" th:chapter="${chapter.getChapterNum()}" th:story_id="${chapter.getStory().getId()}" th:pretty_title="${chapter.getStory().getSafeUrl()}" style="display: inline;"><input type="Submit" value="Next"></form>    
+</div>
+
+<!--
+<div th:if="${chapters.size() > 1" th:remove="tag" />
+    [% chapter_selector = '<select id="chapter_selector" story_id="' _ story.id _ '" pretty_title="' _ pretty_title _ '">' %]
+    [% FOREACH chap IN chapters %]
+        [% selected = '' %]
+        [% IF chap.chapter_num == chapter_num %]
+            [% selected = 'selected' %]
+        [% END %]
+        [% chapter_selector = chapter_selector _ '<option value="' _ chap.chapter_num _ '"' _ selected _ '>Chapter ' _ chap.chapter_num %]
+            [% IF chap.chapter_title %]
+                [% chapter_selector = chapter_selector _ ': ' _ chap.chapter_title %]
+                [% chapter_selector = chapter_selector _ '</option>' %]
+            [% END %]
+            
+        
+        [% IF chap.chapter_num == chapter_num %]
+
+
+    [% IF chapter_num > 1 %]
+        <form id="previous_chapter" chapter="[% chapter_num %]" story_id="[% story.id %]" pretty_title="[% pretty_title %]" style="display: inline;"><input type="Submit" value="Previous"></form>
+    [% END %]
+    [% chapter_selector %]
+    [% IF chapter_num < num_chapters %]
+        <form id="next_chapter" chapter="[% chapter_num %]" story_id="[% story.id %]" pretty_title="[% pretty_title %]" style="display: inline;"><input type="Submit" value="Next"></form>
+    [% END %]
+</div>
+-->
+
+
+<p>
+
+<div id="sharing_tools_box">
+
+<!-- IF User
+	<a href="#" onclick="javascript:$('#new_comment_box').toggle();$('#comment_box').focus();return false" class="share_button comment_button" >Post Comment</a>
+-->
+
+<!-- If can write
+		    [% IF num_chapters == chapter_num %]
+		    <a href="#" onclick="javascript:$('#chapter_writer').toggle();$('#chapterContent').focus();return false" class="share_button" >Write Next Chapter</a>
+		    [% END %]
+-->
+</div>
+
+<p>
+
+    <div id="posts">
+
+    <div id="new_comments"></div>
+
+    <th:block th:each="comment : ${comments}">
+
+      <div class="comment">
+        <img th:src="${comment.getUser().getUserProfile().getProfileImage().getThumbUrl()}" />
+        <p class="article" th:utext="${comment.getCommentHTML()}"></p>
+        <br clear="all">
+        <h2 th:text="'Submitted by ' + ${comment.getUser().getUsername()} + ' on ' + ${#dates.format(comment.getCreateDate(), 'MMM dd, yyyy h:mm a')}"></h2><br />
+      </div>
+
+    </th:block>    
+
+    </div>
+
+</div>
+
+
+        <br clear="all">
+
+
+        </div>
+
+
+				
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+            <div th:insert="ad_right_side" th:remove="tag" />
+		</div>
+
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>

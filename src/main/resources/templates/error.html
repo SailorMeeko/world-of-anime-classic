@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+  <div th:insert="header" th:remove="tag" />
+
+  <body>
+
+<div id="content">
+
+
+<h1 class="error_header">Error</h1>
+
+Uh oh, something bad has happened. We are alerting the raccoon behind the scenes, and he will take a look at it.
+
+		</div>
+
+		
+				
+    <div id="right_column">
+          <div th:insert="login_form" th:remove="tag" />  
+    </div>
+
+  <div th:insert="footer" th:remove="tag" />
+
+  </body>
+</html>   

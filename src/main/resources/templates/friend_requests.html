@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="woaApp">
+	<div th:insert="header" th:remove="tag" />
+
+	<body>
+
+<script src="/javascript/friends.js"></script>
+
+		<div id="content">
+
+<div th:if="${loggedInUser.userExists() == true}" th:remove="tag">
+	<h1 class="front_header">Friend Requests</h1>
+	<div id="popuup_accept_div" class="popup_accept_msg">
+	   Friend request accepted!
+	</div>
+	<div id="popuup_reject_div" class="popup_reject_msg">
+	   Friend request rejected!
+	</div>
+	<span th:if="${friendRequests == null}" th:remove="tag">You currently have no friend requests</span>
+	<span th:if="${friendRequests?.size() > 0}" th:remove="tag">The following people have requested to be your friend</span>
+	<p />
+
+
+	<div th:each="friend : ${friendRequests}" id="top_user_profile_box" th:class="'friend_' + ${friend.getSubjectId()}">
+		<table border="0">
+		<tr>
+		<td valign="top" rowspan="2">
+			<a th:href="'/profile/' + ${friend.getSubject().getUsername()}"><img th:src="${friend.getSubject().getImageIcon()}" border="0" /></a>		
+		</td>
+		<td valign="top" width="380">
+			<span class="top_user_profile_name"><a th:href="'/profile/' + ${friend.getSubject().getUsername()}" th:text="${friend.getSubject().getUsername()}" /></span><br />
+		</td>
+		<td valign="top">
+			<span class="top_user_profile_link"><a th:href="'/profile/' + ${friend.getSubject().getUsername()}">Profile</a></span><br />
+			<span class="top_user_profile_link"><a th:href="'/profile/' + ${friend.getSubject().getUsername()} + '/gallery'">Image Gallery</a></span><br />
+			<span class="top_user_profile_link"><a th:href="'/profile/' + ${friend.getSubject().getUsername()} + '/blog'">Blog</a></span><br />
+		</td>
+		</tr>
+		<tr>
+			<td colspan="2" valign="bottom"><span class="top_user_profile_date" th:text="'Joined ' + ${friend.getSubject().getCreationDate()}" /><br />
+	                                               <span class="top_user_profile_date" th:text="'Requested Friendship on ' + ${friend.getDate()}" />
+				<span style="float: right"><a href="#" class="friend-accept" th:id="${friend.getSubjectId()}"><font color="green">accept</font></a> <a href="#" class="friend-reject" th:id="${friend.getSubjectId()}"><font color="red">reject</font></a></span>
+			</td>
+		</tr>
+		</table>
+		<hr>
+	</div>
+
+</div>
+
+
+<div th:if="${loggedInUser.userExists() == false}" th:remove="tag">
+	<h1 class="error_header">Error</h1>
+	You must be logged in to view your friend requests.
+</div>
+
+
+		</div>
+
+		
+				
+		<div id="right_column">
+            <div th:insert="login_form" th:remove="tag" />
+      		<div th:insert="ad_right_side" th:remove="tag" />			
+		</div>
+
+
+
+	<div th:insert="footer" th:remove="tag" />
+
+	</body>
+</html>		
